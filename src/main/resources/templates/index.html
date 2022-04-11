@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Greeting</title>
+</head>
+<body>
+<h1>Greeting</h1>
+
+<div th:unless="${#lists.isEmpty(greetings)}">
+    <h3>Current Greetings</h3>
+    <table>
+        <th:block th:each="greeting : ${greetings}">
+            <tr>
+                <td th:text="${greeting}">Greeting</td>
+            </tr>
+        </th:block>
+    </table>
+</div>
+
+<h3>Create new greeting</h3>
+<form method="post" action="/greetings">
+    <label for="greeting-input">
+        <input id="greeting-input" type="text" name="greeting" placeholder="Enter your greeting" minlength="1" />
+    </label>
+    <input type="submit"/>
+</form>
+
+
+</body>
+</html>
