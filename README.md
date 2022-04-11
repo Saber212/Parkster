@@ -1,5 +1,13 @@
 # Getting Started
 
+### Running
+
+Running the application is easiest by running the class Bootstrap from within your IDE, we recommend Intellij IDEA.
+
+To build the application from command line, run `./mvnw package`
+
+Tests can either be run from your IDE or by running `./mvnw test`
+
 ### Reference Documentation
 
 For further reference, please consider the following sections:
