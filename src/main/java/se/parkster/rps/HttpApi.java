@@ -1,38 +1,24 @@
 package se.parkster.rps;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
-import java.util.UUID;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Controller
 public class HttpApi {
-    private static final Logger log = LoggerFactory.getLogger(HttpApi.class);
 
-    private final Database database;
 
-    public HttpApi(Database database) {
-        this.database = database;
+    @RequestMapping("/home")
+    public StreamingResponseBody Home(Game game)
+    {
+        game.calculateResult(game.getPlayer_one(), game.getPlayer_two());
+        System.out.println(game.getResult());
+        StreamingResponseBody stream = out -> {
+            out.write((game.getResult()).getBytes());
+            out.flush();
+        };
+        return stream;
     }
 
-    @GetMapping
-    public String index(ModelMap modelMap) {
-        log.info("Loading index.html");
-        List<String> greetings = database.findAll().stream().map(Greeting::text).toList();
-        modelMap.addAttribute("greetings", greetings);
-        return "index";
-    }
 
-    @PostMapping("/greetings")
-    public String greet(@RequestParam("greeting") String greeting) {
-        log.info("Greeting {}", greeting);
-        database.save(new Greeting(UUID.randomUUID(), greeting));
-        return "redirect:/";
-    }
 }
